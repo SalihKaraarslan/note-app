@@ -7,10 +7,11 @@ const Layout = ({ children, title = "Note App" }) => {
       <Head>
         <title>{title}</title>
       </Head>
-
       <Navbar title={title} />
 
-      <main>{children}</main>
+      <main className="container mt-5" style={{ width: "90%" }}>
+        {children}
+      </main>
     </div>
   );
 };

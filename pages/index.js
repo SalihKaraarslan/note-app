@@ -11,17 +11,25 @@ export default function Home() {
   const [notes, setNotes] = useState([]);
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const { data } = await axios.get(`http://localhost:3000/api/notes`, {
-          headers: { authorization: `Bearer ${users.token}` },
-        });
-        setNotes(data);
-      } catch (err) {
-        alert(err.message);
-      }
-    };
-    fetchOrders();
+    if (!users) {
+      router.push("/login");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (users) {
+      const fetchOrders = async () => {
+        try {
+          const { data } = await axios.get(`http://localhost:3000/api/notes`, {
+            headers: { authorization: `Bearer ${users.token}` },
+          });
+          setNotes(data);
+        } catch (err) {
+          alert(err.message);
+        }
+      };
+      fetchOrders();
+    }
   }, []);
 
   return (

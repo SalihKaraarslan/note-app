@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Layout from "../components/Layout";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -17,6 +17,12 @@ const validate = Yup.object({
 const Login = () => {
   const { users, dispatch } = useContext(Context);
   const router = useRouter();
+
+  useEffect(() => {
+    if (users) {
+      router.push("/");
+    }
+  }, []);
 
   const handleSubmit = async ({ email, password }) => {
     try {

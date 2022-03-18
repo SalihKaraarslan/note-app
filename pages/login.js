@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import Layout from "../components/Layout";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import TextField from "../components/TextField";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { Context } from "../context/Provider";
 
 const validate = Yup.object({
   email: Yup.string().email("E-mail is invalid").required("E-mail is required"),
@@ -12,13 +15,26 @@ const validate = Yup.object({
 });
 
 const Login = () => {
-  const handleSubmit = ({ email, password }) => {
-    console.log(email, password);
+  const { users, dispatch } = useContext(Context);
+  const router = useRouter();
+
+  const handleSubmit = async ({ email, password }) => {
+    try {
+      const { data } = await axios.post("/api/users/login", {
+        email,
+        password,
+      });
+      dispatch({ type: "USER_LOGIN", payload: data });
+
+      router.push("/");
+    } catch (err) {
+      alert(err.message);
+    }
   };
 
   return (
     <Layout>
-      {false ? (
+      {users ? (
         <h2>You are already logged in</h2>
       ) : (
         <Formik

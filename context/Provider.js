@@ -10,6 +10,7 @@ const Provider = ({ children }) => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
   const { users } = state;
+  console.log(users);
 
   return (
     <Context.Provider

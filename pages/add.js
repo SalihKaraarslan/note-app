@@ -1,20 +1,30 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Layout from "../components/Layout";
 import { useRouter } from "next/router";
+import { Context } from "../context/Provider";
 
 const Add = () => {
   const router = useRouter();
+  const { users } = useContext(Context);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post("/api/notes", {
-        title,
-        desc,
-      });
+      const { data } = await axios.post(
+        "/api/notes",
+        {
+          title,
+          desc,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${users.token}`,
+          },
+        }
+      );
       router.push("/");
     } catch (err) {
       alert(err.message);

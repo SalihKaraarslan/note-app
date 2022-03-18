@@ -9,7 +9,7 @@ export default function Home({ notes }) {
   const { users } = useContext(Context);
   const router = useRouter();
 
-  console.log(notes);
+  console.log(notes.map((note) => note.title));
 
   useEffect(() => {
     if (!users) {
@@ -23,25 +23,31 @@ export default function Home({ notes }) {
         <h1>Please login to view the page</h1>
       ) : (
         <div className="row justify-content-center">
-          <div className="card mt-4 mx-3" style={{ width: "12rem" }}>
-            <div className="card-body align-items-center">
-              <h5 className="card-title d-flex justify-content-center">
-                başlık
-              </h5>
-              <p className="card-text">açıklama</p>
+          {notes.map((note) => (
+            <div
+              key={note._id}
+              className="card mt-4 mx-3"
+              style={{ width: "12rem" }}
+            >
+              <div className="card-body align-items-center">
+                <h5 className="card-title d-flex justify-content-center">
+                  {note.title}
+                </h5>
+                <p className="card-text">{note.desc}</p>
 
-              <div className="d-flex justify-content-center ">
-                <Link href="/">
-                  <button
-                    type="button"
-                    className="btn btn-outline-warning mt-2"
-                  >
-                    View
-                  </button>
-                </Link>
+                <div className="d-flex justify-content-center ">
+                  <Link href={`/${note._id}`}>
+                    <button
+                      type="button"
+                      className="btn btn-outline-warning mt-2"
+                    >
+                      View
+                    </button>
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
       )}
     </Layout>

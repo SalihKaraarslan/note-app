@@ -3,10 +3,13 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import { Context } from "../context/Provider";
 import { useRouter } from "next/router";
+import axios from "axios";
 
-export default function Home() {
+export default function Home({ notes }) {
   const { users } = useContext(Context);
   const router = useRouter();
+
+  console.log(notes);
 
   useEffect(() => {
     if (!users) {
@@ -43,4 +46,13 @@ export default function Home() {
       )}
     </Layout>
   );
+}
+
+export async function getStaticProps() {
+  const { data } = await axios.get("http://localhost:3000/api/notes");
+  return {
+    props: {
+      notes: data,
+    },
+  };
 }

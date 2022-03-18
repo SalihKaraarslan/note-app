@@ -11,4 +11,14 @@ handler.get(async (req, res) => {
   res.send(notes);
 });
 
+handler.post(async (req, res) => {
+  await db.connect();
+  const newNote = new Note({
+    ...req.body,
+  });
+  const notes = await newNote.save();
+  await db.disconnect();
+  res.send({ message: "Note Created", notes });
+});
+
 export default handler;

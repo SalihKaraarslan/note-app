@@ -1,15 +1,24 @@
+import axios from "axios";
 import React, { useState } from "react";
 import Layout from "../components/Layout";
+import { useRouter } from "next/router";
 
 const Add = () => {
+  const router = useRouter();
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
 
-  console.log(title, desc);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("submittttt");
+    try {
+      const { data } = await axios.post("/api/notes", {
+        title,
+        desc,
+      });
+      router.push("/");
+    } catch (err) {
+      alert(err.message);
+    }
   };
 
   return (

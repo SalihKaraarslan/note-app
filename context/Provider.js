@@ -6,27 +6,33 @@ export const Context = createContext();
 const Provider = ({ children }) => {
   const initialState = {
     users: null,
+    deletedData: [],
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { users } = state;
+  const { users, deletedData } = state;
 
   useEffect(() => {
     const users = JSON.parse(localStorage.getItem("users"));
+    const deletedData = localStorage.getItem("deletedData")
+      ? JSON.parse(localStorage.getItem("deletedData"))
+      : [];
     dispatch({
-      type: "USER_LOGIN",
-      payload: users,
+      type: "SET_DATA",
+      payload: { users, deletedData },
     });
   }, []);
 
   useEffect(() => {
     localStorage.setItem("users", JSON.stringify(users));
-  }, [users]);
+    localStorage.setItem("deletedData", JSON.stringify(deletedData));
+  }, [users, deletedData]);
 
   return (
     <Context.Provider
       value={{
         users,
+        deletedData,
         dispatch,
       }}
     >

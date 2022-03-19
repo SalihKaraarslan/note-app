@@ -12,24 +12,19 @@ export default function Home() {
 
   useEffect(() => {
     if (!users) {
-      router.push("/login");
+      return router.push("/login");
     }
-  }, []);
-
-  useEffect(() => {
-    if (users) {
-      const fetchOrders = async () => {
-        try {
-          const { data } = await axios.get(`http://localhost:3000/api/notes`, {
-            headers: { authorization: `Bearer ${users.token}` },
-          });
-          setNotes(data);
-        } catch (err) {
-          alert(err.message);
-        }
-      };
-      fetchOrders();
-    }
+    const fetchOrders = async () => {
+      try {
+        const { data } = await axios.get(`http://localhost:3000/api/notes`, {
+          headers: { authorization: `Bearer ${users.token}` },
+        });
+        setNotes(data);
+      } catch (err) {
+        alert(err.message);
+      }
+    };
+    fetchOrders();
   }, []);
 
   return (

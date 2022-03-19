@@ -32,6 +32,18 @@ const Navbar = ({ title }) => {
         </div>
 
         <div className="collapse navbar-collapse justify-content-end me-5">
+          {users?.isAdmin && (
+            <div className="me-5">
+              <Link href="/deleted">
+                <a>
+                  <div className="d-flex ">
+                    <h4>Deleted Data</h4>
+                  </div>
+                </a>
+              </Link>
+            </div>
+          )}
+
           <div className="me-5">
             <Link href="/add">
               <a>

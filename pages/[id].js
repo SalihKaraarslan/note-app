@@ -6,7 +6,7 @@ import { Context } from "../context/Provider";
 
 const Edit = () => {
   const router = useRouter();
-  const { users } = useContext(Context);
+  const { users, dispatch } = useContext(Context);
   const [newTitle, setNewTitle] = useState("");
   const [newDesc, setNewDesc] = useState("");
   const [dataId, setDataId] = useState();
@@ -36,6 +36,10 @@ const Edit = () => {
         headers: {
           authorization: `Bearer ${users.token}`,
         },
+      });
+      dispatch({
+        type: "ADD_DELETED_DATA",
+        payload: { title: newTitle, desc: newDesc, token: users.token },
       });
       router.push("/");
     } catch (err) {

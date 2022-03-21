@@ -3,8 +3,6 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import { Context } from "../context/Provider";
 import { useRouter } from "next/router";
-import useFetch from "../hooks/useFetch";
-import axios from "axios";
 import { fetchNotes } from "../functions";
 
 export default function Home() {

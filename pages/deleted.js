@@ -1,33 +1,10 @@
-import axios from "axios";
 import React, { useContext } from "react";
 import Layout from "../components/Layout";
 import { Context } from "../context/Provider";
+import { restoreNote } from "../functions";
 
 const Deleted = () => {
   const { deletedData, dispatch, users } = useContext(Context);
-
-  const handleRestore = async (title, desc, token) => {
-    try {
-      const { data } = await axios.post(
-        "/api/notes",
-        {
-          title,
-          desc,
-        },
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      dispatch({
-        type: "REMOVE_DELETED_DATA",
-        payload: title,
-      });
-    } catch (err) {
-      alert(err.message);
-    }
-  };
 
   return (
     <Layout title="Deleted Data">
@@ -44,7 +21,7 @@ const Deleted = () => {
                 <div className="d-flex justify-content-center ">
                   <button
                     onClick={() =>
-                      handleRestore(note.title, note.desc, note.token)
+                      restoreNote(note.title, note.desc, note.token, dispatch)
                     }
                     type="button"
                     className="btn btn-outline-warning mt-2"

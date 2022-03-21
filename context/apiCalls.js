@@ -1,7 +1,19 @@
 import axios from "axios";
 
+const login = async (email, password, router, dispatch) => {
+  try {
+    const { data } = await axios.post("/api/users/login", {
+      email,
+      password,
+    });
+    dispatch({ type: "USER_LOGIN", payload: data });
+    router.push("/");
+  } catch (err) {
+    alert(err.message);
+  }
+};
 
-const fetchNotes = async (token,setNotes) => {
+const fetchNotes = async (token, setNotes) => {
   try {
     const { data } = await axios.get(`http://localhost:3000/api/notes`, {
       headers: { authorization: `Bearer ${token}` },
@@ -12,17 +24,14 @@ const fetchNotes = async (token,setNotes) => {
   }
 };
 
-const fetchNote = async (id,token,setNewTitle,setNewDesc,setDataId) => {
+const fetchNote = async (id, token, setNewTitle, setNewDesc, setNoteId) => {
   try {
-    const { data } = await axios.get(
-      `http://localhost:3000/api/notes/${id}`,
-      {
-        headers: { authorization: `Bearer ${token}` },
-      }
-    );
+    const { data } = await axios.get(`http://localhost:3000/api/notes/${id}`, {
+      headers: { authorization: `Bearer ${token}` },
+    });
     setNewTitle(data.title);
     setNewDesc(data.desc);
-    setDataId(data._id);
+    setNoteId(data._id);
   } catch (err) {
     alert(err.message);
   }
@@ -42,13 +51,14 @@ const addNote = async (title, desc, token, router) => {
         },
       }
     );
+
     router.push("/");
   } catch (err) {
     alert(err.message);
   }
 };
 
-const removeNote = async (id, title, desc, token, dispatch, router) => {
+const removeNote = async (id, title, desc, token, router, dispatch) => {
   try {
     await axios.delete(`api/notes/${id}`, {
       headers: {
@@ -109,4 +119,12 @@ const restoreNote = async (title, desc, token, dispatch) => {
   }
 };
 
-export { fetchNotes,fetchNote,addNote, removeNote, editNote, restoreNote};
+export {
+  login,
+  fetchNotes,
+  fetchNote,
+  addNote,
+  removeNote,
+  editNote,
+  restoreNote,
+};

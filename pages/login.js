@@ -3,9 +3,10 @@ import Layout from "../components/Layout";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import TextField from "../components/TextField";
-import axios from "axios";
 import { useRouter } from "next/router";
 import { Context } from "../context/Provider";
+import { login } from "../context/apiCalls";
+import dynamic from "next/dynamic";
 
 const validate = Yup.object({
   email: Yup.string().email("E-mail is invalid").required("E-mail is required"),
@@ -19,23 +20,13 @@ const Login = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (users) {
+    if (!!users) {
       router.push("/");
     }
   }, []);
 
-  const handleSubmit = async ({ email, password }) => {
-    try {
-      const { data } = await axios.post("/api/users/login", {
-        email,
-        password,
-      });
-      dispatch({ type: "USER_LOGIN", payload: data });
-
-      router.push("/");
-    } catch (err) {
-      alert(err.message);
-    }
+  const handleSubmit = ({ email, password }) => {
+    login(email, password, router, dispatch);
   };
 
   return (
@@ -73,4 +64,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default dynamic(() => Promise.resolve(Login), { ssr: false });

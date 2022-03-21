@@ -2,24 +2,29 @@ import React, { useContext, useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useRouter } from "next/router";
 import { Context } from "../context/Provider";
-import { editNote, fetchNote, removeNote } from "../functions";
+import { editNote, fetchNote, removeNote } from "../context/apiCalls";
 
 const Edit = () => {
   const router = useRouter();
   const { users, dispatch } = useContext(Context);
-
   const [newTitle, setNewTitle] = useState("");
   const [newDesc, setNewDesc] = useState("");
-  const [dataId, setDataId] = useState()
+  const [noteId, setNoteId] = useState();
 
   useEffect(() => {
     if (!users) {
-      return router.push("/login");
+      router.push("/login");
+    } else {
+      fetchNote(
+        router.query.id,
+        users?.token,
+        setNewTitle,
+        setNewDesc,
+        setNoteId,
+        dispatch
+      );
     }
-   
-    fetchNote(router.query.id ,users?.token, setNewTitle,setNewDesc,setDataId);
   }, []);
-  
 
   return (
     <Layout title="Edit Page">
@@ -30,12 +35,12 @@ const Edit = () => {
             <button
               onClick={() =>
                 removeNote(
-                  dataId,
+                  noteId,
                   newTitle,
                   newDesc,
                   users?.token,
-                  dispatch,
-                  router
+                  router,
+                  dispatch
                 )
               }
               className="btn btn-sm btn-outline-danger"

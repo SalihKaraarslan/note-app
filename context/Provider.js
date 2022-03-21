@@ -11,9 +11,12 @@ const Provider = ({ children }) => {
 
   const [state, dispatch] = useReducer(reducer, initialState);
   const { users, deletedData } = state;
+  console.log(users);
 
   useEffect(() => {
-    const users = JSON.parse(localStorage.getItem("users"));
+    const users = localStorage.getItem("users")
+      ? JSON.parse(localStorage.getItem("users"))
+      : null;
     const deletedData = localStorage.getItem("deletedData")
       ? JSON.parse(localStorage.getItem("deletedData"))
       : [];

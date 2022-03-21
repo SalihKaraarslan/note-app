@@ -3,7 +3,7 @@ import Link from "next/link";
 import Layout from "../components/Layout";
 import { Context } from "../context/Provider";
 import { useRouter } from "next/router";
-import { fetchNotes } from "../functions";
+import { fetchNotes } from "../context/apiCalls";
 
 export default function Home() {
   const { users } = useContext(Context);
@@ -14,10 +14,9 @@ export default function Home() {
     if (!users) {
       return router.push("/login");
     }
-   
+
     fetchNotes(users?.token, setNotes);
   }, []);
- 
 
   return (
     <Layout>

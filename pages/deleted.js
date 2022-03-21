@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import Layout from "../components/Layout";
+import { restoreNote } from "../context/apiCalls";
 import { Context } from "../context/Provider";
-import { restoreNote } from "../functions";
 
 const Deleted = () => {
   const { deletedData, dispatch, users } = useContext(Context);

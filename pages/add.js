@@ -2,7 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useRouter } from "next/router";
 import { Context } from "../context/Provider";
-import { addNote } from "../functions";
+import { addNote } from "../context/apiCalls";
+import dynamic from "next/dynamic";
 
 const Add = () => {
   const router = useRouter();
@@ -51,4 +52,4 @@ const Add = () => {
   );
 };
 
-export default Add;
+export default dynamic(() => Promise.resolve(Add), { ssr: false });

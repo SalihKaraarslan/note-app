@@ -1,26 +1,30 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import Layout from "../components/Layout";
 import { Context } from "../context/Provider";
 import { useRouter } from "next/router";
 import useFetch from "../hooks/useFetch";
+import axios from "axios";
+import { fetchNotes } from "../functions";
 
 export default function Home() {
   const { users } = useContext(Context);
   const router = useRouter();
+  const [notes, setNotes] = useState([]);
 
   useEffect(() => {
     if (!users) {
       return router.push("/login");
     }
+   
+    fetchNotes(users?.token, setNotes);
   }, []);
-
-  const { data } = useFetch(`http://localhost:3000/api/notes`, users?.token);
+ 
 
   return (
     <Layout>
       <div className="row justify-content-center">
-        {data.map((note) => (
+        {notes.map((note) => (
           <div
             key={note._id}
             className="card mt-4 mx-3"

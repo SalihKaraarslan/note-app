@@ -2,23 +2,24 @@ import React, { useContext, useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useRouter } from "next/router";
 import { Context } from "../context/Provider";
-import useFetch from "../hooks/useFetch";
-import { editNote, removeNote } from "../functions";
+import { editNote, fetchNote, removeNote } from "../functions";
 
 const Edit = () => {
   const router = useRouter();
   const { users, dispatch } = useContext(Context);
-  const { loading, data, error } = useFetch(
-    `http://localhost:3000/api/notes/${router.query.id}`,
-    users?.token
-  );
-  const [newTitle, setNewTitle] = useState(data.title);
-  const [newDesc, setNewDesc] = useState(data.desc);
+
+  const [newTitle, setNewTitle] = useState("");
+  const [newDesc, setNewDesc] = useState("");
+  const [dataId, setDataId] = useState()
 
   useEffect(() => {
-    setNewTitle(data.title);
-    setNewDesc(data.desc);
-  }, [data]);
+    if (!users) {
+      return router.push("/login");
+    }
+   
+    fetchNote(router.query.id ,users?.token, setNewTitle,setNewDesc,setDataId);
+  }, []);
+  
 
   return (
     <Layout title="Edit Page">
@@ -29,7 +30,7 @@ const Edit = () => {
             <button
               onClick={() =>
                 removeNote(
-                  data._id,
+                  dataId,
                   newTitle,
                   newDesc,
                   users?.token,

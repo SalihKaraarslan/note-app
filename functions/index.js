@@ -1,5 +1,33 @@
 import axios from "axios";
 
+
+const fetchNotes = async (token,setNotes) => {
+  try {
+    const { data } = await axios.get(`http://localhost:3000/api/notes`, {
+      headers: { authorization: `Bearer ${token}` },
+    });
+    setNotes(data);
+  } catch (err) {
+    alert(err.message);
+  }
+};
+
+const fetchNote = async (id,token,setNewTitle,setNewDesc,setDataId) => {
+  try {
+    const { data } = await axios.get(
+      `http://localhost:3000/api/notes/${id}`,
+      {
+        headers: { authorization: `Bearer ${token}` },
+      }
+    );
+    setNewTitle(data.title);
+    setNewDesc(data.desc);
+    setDataId(data._id);
+  } catch (err) {
+    alert(err.message);
+  }
+};
+
 const addNote = async (title, desc, token, router) => {
   try {
     const { data } = await axios.post(
@@ -81,4 +109,4 @@ const restoreNote = async (title, desc, token, dispatch) => {
   }
 };
 
-export { addNote, removeNote, editNote, restoreNote };
+export { fetchNotes,fetchNote,addNote, removeNote, editNote, restoreNote};
